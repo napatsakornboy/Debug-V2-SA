@@ -75,17 +75,15 @@ func main() {
 
 	// ================= 04 ======================================
 	//===========Level===========
-	r.POST("/CreateLevel",controller.CreateLevel)
-	r.GET("/GetListLevels",controller.ListLevel)
-	r.GET("/GetLevel/:id",controller.GetLevel)
+	r.POST("/CreateLevel", controller.CreateLevel)
+	r.GET("/GetListLevels", controller.ListLevel)
+	r.GET("/GetLevel/:id", controller.GetLevel)
 
 	//=========== Main Table Symptom ===========
-	r.POST("/CreateSymptom",controller.CreateSymptom)
-	r.GET("/GetListSymptoms",controller.ListSymptom)
-	r.GET("/GetSymptom/:id",controller.GetSymptom)
+	r.POST("/CreateSymptom", controller.CreateSymptom)
+	r.GET("/GetListSymptoms", controller.ListSymptom)
+	r.GET("/GetSymptom/:id", controller.GetSymptom)
 	//=========== Main Table Symptom ===========
-	
-	
 
 	// ====================== 05 ===============================
 
@@ -114,6 +112,8 @@ func main() {
 
 	r.GET("/ListBasket", controller.ListBasket)
 	r.POST("/CreateBasket", controller.CreateBasket)
+
+	r.GET("/ListUsers", controller.ListUsers)
 
 	r.Run()
 }

@@ -16,6 +16,8 @@ type User struct {
 	Patient []Patient `gorm:"ForeignKey:User_ID"`
 	Triage  []Triage  `gorm:"ForeignKey:User_ID"`
 	Map_Bed []Map_Bed `gorm:"ForeignKey:User_ID"`
+	BASKETS []BASKET `gorm:"foreignKey:MEDICINE_ID"`
+	
 }
 
 type UserType struct {

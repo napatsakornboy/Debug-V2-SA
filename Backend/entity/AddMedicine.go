@@ -31,6 +31,9 @@ type BASKET struct {
 	Symptom_ID *uint
 	Symptom    Symptom `gorm:"references:id"`
 
+	User_ID 		*uint
+	User    		User 		`gorm:"references:id"`
+
 	//รอแอดของพืชที่เป็น FK heck_ID
 }
 

@@ -11,6 +11,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { MEDICINEInterface,WHEREInterface,DOCTORInterface,BASKETInterface} from "../models/MedicineInterface";
 import { SymptomInterface } from "../models/SymptomInterface";
+import { UserInterface } from "../models/User";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -38,6 +39,8 @@ function BASKETCreate() {
    const [DOCTOR_ID, setDOCTOR_ID] = useState('');
    const [WHERE_ID, setWHERE_ID] = useState('');
    const [Symptom_ID, setSymptom_ID] = useState('');
+   const [User_ID, setUser_ID] = useState('');
+   
   
   const [Add_time, setDate] = React.useState<Dayjs | null>(null);
   const [BASKET, setBasket] = React.useState<Partial<BASKETInterface>>({});
@@ -79,6 +82,11 @@ const handleChange = (
 const onChangeSymptom = (event: SelectChangeEvent) => {
   setSymptom_ID(event.target.value as string);
 };
+
+const onChangeUser = (event: SelectChangeEvent) => {
+  setUser_ID(event.target.value as string);
+};
+
   const onChangeWHERE = (event: SelectChangeEvent) => {
     setWHERE_ID(event.target.value as string);
   };
@@ -105,7 +113,8 @@ const onChangeSymptom = (event: SelectChangeEvent) => {
      MEDICINE_ID: convertType(MEDICINE_ID),
      DOCTOR_ID: convertType(DOCTOR_ID),
      Symptom_ID: convertType(Symptom_ID),
- 
+     User_ID: convertType(User_ID),
+     
   };
 
     //check data
@@ -138,13 +147,14 @@ const onChangeSymptom = (event: SelectChangeEvent) => {
      setMEDICINE_ID("");
      setDOCTOR_ID("");
      setSymptom_ID("");
-
+     setUser_ID("");
 
  }
 /////////////////////////////////////////////-_ ส่วนของการโหลดและดึงค่ามาใช้(ใช้กับ Combobox) _-//////////////////////////////////////////////////////////
 
 
-const [Symtomp, setSymtomp] = React.useState<any[]>([]); //useStateเรียกทุกตัวมาใช้
+// const [Symtomp, setSymptom] = React.useState<any[]>([]); //useStateเรียกทุกตัวมาใช้
+const [Symptom, setSymptom] = React.useState<any[]>([]); //useStateเรียกทุกตัวมาใช้
 const [triages, setTriages] = useState<any[]>([]);
 console.log(triages);
 
@@ -156,11 +166,12 @@ console.log(triages);
       headers: { "Content-Type": "application/json" },
     };
     fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
+      .then((response) => response.json())  
       .then((res) => {
         if (res.data) {
-          setTriages(res)
-          // setSymtomp(res.data);
+          // setTriages(res.data)
+          console.log(res.data);
+          setSymptom(res.data);
           
           
         } else {
@@ -185,6 +196,25 @@ console.log(triages);
         }
       });
   };
+
+  const [User, setuser] = React.useState<UserInterface[]>([]); 
+  const getUser = async () => {
+    const apiUrl = `http://localhost:8080/ListUsers`;
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.data) {
+          setuser(res.data);
+        } else {
+          console.log("else");
+        }
+      });
+  };
+  
   const [WHERE, setWhere] = React.useState<WHEREInterface[]>([]);
   const getWhere= async () => {
     const apiUrl = `http://localhost:8080/ListWhere`;
@@ -229,6 +259,7 @@ console.log(triages);
       getDoctor();
       getMedicine();
       getSymptom();
+      getUser();
 
     }, []);
 
@@ -296,16 +327,15 @@ return (
                   value={Symptom_ID}
                   onChange={onChangeSymptom}
                   inputProps={{
-                    name: "Symtomp_ID",
+                    name: "Symptom_ID",
                   }}
                 >
                   <option aria-label="None" value="">
                     กรุณาเลือกผู้ป่วย
                   </option> 
-                      {Symtomp.map((item) => (
+                      {Symptom.map((item) => (
                         <option value={item.ID} key={item.ID}>
-                        เตียง {item.MapbID} - ชื่อ 
-                        {/* {item.MapbID.Patient_ID.Patient_Name} */}
+                        เตียง {item.Mapb.Bed.Bed_Name} - ชื่อ {item.Mapb.Triage.Patient.Patient_Name}
                           </option>
                       ))}    
                 </Select>
@@ -425,18 +455,18 @@ return (
               <FormControl fullWidth variant="outlined">
                 <Select
                   native
-                  value={DOCTOR_ID}
-                  onChange={onChangeDOCTOR}
+                  value={User_ID}
+                  onChange={onChangeUser}
                   inputProps={{
-                    name: "DOCTOR_ID",
+                    name: "User_ID",
                   }}
                 >
                   <option aria-label="None" value="">
                     กรุณาเลือกผู้จ่ายยา
                   </option> 
-                      {DOCTOR.map((item: DOCTORInterface) => (
+                      {User.map((item: UserInterface) => (
                         <option value={item.ID} key={item.ID}>
-                        {item.Name} - {item.Title}
+                        {item.Name}
                          </option>
                       ))}    
                 </Select>

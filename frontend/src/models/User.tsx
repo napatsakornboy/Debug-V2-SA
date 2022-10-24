@@ -1,7 +1,7 @@
 import { UserTypeInterface } from "./UserType"
 export interface UserInterface {
     ID: number,
-	User_NAME:     string
+	Name:     string
 	User_PASSWORD: string
 	ISNAME:        string
 	UserType_ID: Number

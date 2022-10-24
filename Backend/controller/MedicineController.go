@@ -184,7 +184,7 @@ func CreateBasket(c *gin.Context) {
 func GetBasket(c *gin.Context) {
 	var GetBasket entity.BASKET
 	id := c.Param("id")
-	if err := entity.DB().Preload("DOCTOR").Preload("MEDICINE").Preload("WHERE").Preload("Symtom").Raw("SELECT * FROM baskets WHERE id = ?", id).Find(&GetBasket).Error; err != nil {
+	if err := entity.DB().Preload("DOCTOR").Preload("MEDICINE").Preload("WHERE").Preload("Symtom").Preload("User").Raw("SELECT * FROM baskets WHERE id = ?", id).Find(&GetBasket).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
